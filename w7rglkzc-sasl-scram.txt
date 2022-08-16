@@ -1,0 +1,4 @@
+CLOUDKARAFKA_BROKERS=moped-01.srvs.cloudkafka.com:9094,moped-02.srvs.cloudkafka.com:9094,moped-03.srvs.cloudkafka.com:9094
+CLOUDKARAFKA_USERNAME=w7rglkzc
+CLOUDKARAFKA_PASSWORD=7w4xX7riGgVOzOZqcCh_ET55EWoSh9n2
+CLOUDKARAFKA_TOPIC_PREFIX=w7rglkzc-
