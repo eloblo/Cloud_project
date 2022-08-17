@@ -4,7 +4,7 @@ const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
 
 const kafkaConf = {
-  "group.id": "cloudkarafka-example",
+  "group.id": "Ariel_cloud_project",
   "metadata.broker.list": "moped-01.srvs.cloudkafka.com:9094,moped-02.srvs.cloudkafka.com:9094,moped-03.srvs.cloudkafka.com:9094".split(","),
   "socket.keepalive.enable": true,
   "security.protocol": "SASL_SSL",
