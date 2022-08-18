@@ -19,7 +19,7 @@ const kafkaConf = {
   };
 
 const prefix = "w7rglkzc-";
-const topics = [`${prefix}default`,`${prefix}flights`]
+const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`]
 const producer = new Kafka.Producer(kafkaConf);
 
 console.log('producer');
@@ -42,10 +42,27 @@ function get_total_data(){
   });
 }
 
-function get15min_flights(){
-  mysqlJson.query("", function(err, response) {
+function get2fligh(){
+  var now = Math.floor(Date.now() / 1000);
+  var min = now + 900;
+  mysqlJson.query(`SELECT COUNT(DISTINCT hex) to_fligh FROM flights_from f1 JOIN schedules_from s1 ON f1.flight_number=s1.cs_flight_number \
+                  WHERE s1.status='scheduled' AND s1.dep_estimated_ts < ${min} UNION \
+                  SELECT COUNT(DISTINCT hex) to_fligh FROM flights_from f2 JOIN schedules_from s2 ON f2.flight_number=s2.cs_flight_number \
+                  WHERE s2.status='scheduled' AND s2.dep_estimated_ts < ${min};`, function(err, response) {
     if (err) throw err;
     sendmsg(response, topics[1]);
+  });
+}
+
+function get2land(){
+  var now = Math.floor(Date.now() / 1000);
+  var min = now + 900;
+  mysqlJson.query(`SELECT COUNT(DISTINCT hex) to_land FROM flights_from f1 JOIN schedules_from s1 ON f1.flight_number=s1.cs_flight_number \
+                  WHERE s1.status='active' AND s1.arr_estimated_ts < ${min} UNION \
+                  SELECT COUNT(DISTINCT hex) to_land FROM flights_from f2 JOIN schedules_from s2 ON f2.flight_number=s2.cs_flight_number \
+                  WHERE s2.status='active' AND s2.arr_estimated_ts < ${min};`, function(err, response) {
+    if (err) throw err;
+    sendmsg(response, topics[2]);
   });
 }
 
@@ -55,5 +72,6 @@ mysqlJson.connect(function(err, response){
 });
 setInterval(() => {
   get_total_data();
-  //get15min_flights();
+  get2fligh();
+  get2land();
 }, 3000)

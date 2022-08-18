@@ -20,7 +20,7 @@ const tables = [['flights_to', flight_api,{api_key: key, arr_iata: 'TLV'}],
 
 
 
-function getAPI(table, url, params){
+async function getAPI(table, url, params){
 
 // use schedules endpoint to get the arrival time by merging flights flight_number to schedules cs_flight_number
 // need seperate params for departure and arrival, api cannot do or between oprions only and
@@ -33,7 +33,7 @@ function getAPI(table, url, params){
       });
       Promise.all(apiResponse.map((object) => {
         return new Promise((resolve, reject) => {
-          if(object.status == 'active' || object.status == 'en-route'){
+          if(object.status == 'active' || object.status == 'en-route' || object.status == 'scheduled'){
             if(object.delayed){ 
               object.delay = object.delayed;
               delete object.delayed;
@@ -90,10 +90,6 @@ function init_connection(){
                                 dep_time_ts BIGINT, status VARCHAR(16), duration INT, delay INT, aircraft_icao VARCHAR(16), arr_time_ts BIGINT, \
                                 arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);"
 
-  mysqlJson.connect(function(err, response){
-    if(err) throw err;
-    console.log('connected');
-  });
   
   // create tables
   mysqlJson.query(flights_table_to, function(err, response) {
@@ -113,6 +109,10 @@ function init_connection(){
   });
 }
 
+mysqlJson.connect(function(err, response){
+  if(err) throw err;
+  console.log('connected');
+});
 init_connection();
 tables.forEach(element => {
   getAPI(element[0],element[1],element[2])
