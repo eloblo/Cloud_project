@@ -19,14 +19,34 @@ const kafkaConf = {
   };
 
 const prefix = "w7rglkzc-";
-const topic = `${prefix}default`;
+const topics = [`${prefix}default`,`${prefix}flights`]
 const producer = new Kafka.Producer(kafkaConf);
 
 console.log('producer');
 producer.connect();
 
-function sendmsg(msg){
+function sendmsg(msg, topic){
   producer.produce(topic, -1, Buffer.from(JSON.stringify(msg))); 
+}
+
+function get_total_data(){
+  // mysql code for combined stored data, left join produces more data but lacks schedules
+  mysqlJson.query("SELECT f2.* , s2.dep_time_utc, s2.dep_estimated_utc, s2.dep_actual_utc, s2.arr_time_utc, s2.arr_estimated_utc, s2.cs_flight_number, \
+                  s2.cs_flight_iata, s2.dep_time_ts, s2.duration, s2.delay, s2.arr_time_ts, s2.dep_time_ts, s2.arr_estimated_ts, s2.dep_estimated_ts, \
+                  s2.dep_actual_ts FROM flights_to f2 JOIN schedules_to s2 ON f2.flight_number=s2.cs_flight_number UNION \
+                  SELECT f1.* , s1.dep_time_utc, s1.dep_estimated_utc, s1.dep_actual_utc, s1.arr_time_utc, s1.arr_estimated_utc, s1.cs_flight_number, \
+                  s1.cs_flight_iata, s1.dep_time_ts, s1.duration, s1.delay, s1.arr_time_ts, s1.dep_time_ts, s1.arr_estimated_ts, s1.dep_estimated_ts, \
+                  s1.dep_actual_ts FROM flights_from f1 JOIN schedules_from s1 ON f1.flight_number=s1.cs_flight_number", function(err, response) {
+    if (err) throw err;
+    sendmsg(response, topics[0]);
+  });
+}
+
+function get15min_flights(){
+  mysqlJson.query("", function(err, response) {
+    if (err) throw err;
+    sendmsg(response, topics[1]);
+  });
 }
 
 mysqlJson.connect(function(err, response){
@@ -34,10 +54,6 @@ mysqlJson.connect(function(err, response){
   console.log('connected');
 });
 setInterval(() => {
-  // mysql code for combined stored data, left join produces more data but lacks schedules
-  mysqlJson.query("SELECT * FROM flights_to JOIN schedules_to ON flights_to.flight_number=schedules_to.cs_flight_number UNION \
-                  SELECT * FROM flights_from JOIN schedules_from ON flights_from.flight_number=schedules_from.cs_flight_number", function(err, response) {
-    if (err) throw err;
-    sendmsg(response);
-  });
+  get_total_data();
+  //get15min_flights();
 }, 3000)

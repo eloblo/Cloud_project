@@ -13,7 +13,8 @@ axios.get('https://airlabs.co/api/v9/schedules', {params})
   .then(response => {
     var apiResponse = response.data.response;
     apiResponse.forEach(element => {
-      if(element.status == 'active'){
+      if(element.delayed){
+        delete element.delayed
         console.log(element)
       }
     });
