@@ -64,8 +64,14 @@ async function getAPI(table, url, params){
 }
 
 function init_connection(){
+  mysqlJson.connect(function(err, response){
+    if(err) throw err;
+    //console.log(response)
+    console.log('connected to MYSQL');
+  });
+
   const flights_table_to = "CREATE TABLE IF NOT EXISTS flights_to (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
-                          lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
+                          lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
                           flight_icao VARCHAR(32), flight_iata VARCHAR(32), dep_icao VARCHAR(16), dep_iata VARCHAR(16), arr_icao VARCHAR(16), arr_iata VARCHAR(16), \
                           airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));"
 
@@ -78,7 +84,7 @@ function init_connection(){
                               arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);"
                         
   const flights_table_from = "CREATE TABLE IF NOT EXISTS flights_from (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
-                              lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
+                              lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
                               flight_icao VARCHAR(32), flight_iata VARCHAR(32), dep_icao VARCHAR(16), dep_iata VARCHAR(16), arr_icao VARCHAR(16), arr_iata VARCHAR(16), \
                               airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));"
 
@@ -107,18 +113,19 @@ function init_connection(){
   mysqlJson.query(schedules_table_from, function(err, response) {
     if (err) throw err;
   });
+  console.log('initialized MYSQL data sets');
 }
 
-mysqlJson.connect(function(err, response){
-  if(err) throw err;
-  console.log('connected');
-});
-init_connection();
-tables.forEach(element => {
-  getAPI(element[0],element[1],element[2])
-});
-//setInterval(() => {
-//  tables.forEach(element => {
-//    getAPI(element[0],element[1],element[2])
-//  });
-//}, 600000)
+module.exports.connect_sql= function()
+{ 
+  init_connection();
+}
+
+module.exports.load_data= function(time)
+{ 
+  setInterval(() => {
+    tables.forEach(element => {
+      getAPI(element[0],element[1],element[2])
+    });
+  }, time)
+}

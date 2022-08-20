@@ -22,9 +22,6 @@ const prefix = "w7rglkzc-";
 const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`]
 const producer = new Kafka.Producer(kafkaConf);
 
-console.log('producer');
-producer.connect();
-
 function sendmsg(msg, topic){
   producer.produce(topic, -1, Buffer.from(JSON.stringify(msg))); 
 }
@@ -68,10 +65,15 @@ function get2land(){
 
 mysqlJson.connect(function(err, response){
   if(err) throw err;
-  console.log('connected');
+  console.log('producer connected');
 });
-setInterval(() => {
-  get_total_data();
-  get2fligh();
-  get2land();
-}, 3000)
+
+module.exports.produce= function(time)
+{ 
+  producer.connect();
+  setInterval(() => {
+    get_total_data();
+    get2fligh();
+    get2land();
+  }, time)
+}

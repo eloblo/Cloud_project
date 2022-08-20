@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker": "docker run --name airsql2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD='Aa123456' -d mysql:5"
   },
   "author": "",
   "license": "ISC",
