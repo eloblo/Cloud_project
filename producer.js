@@ -1,5 +1,6 @@
 const Kafka = require("node-rdkafka");
 const MysqlJson = require('mysql-json');
+const axios = require('axios');
 
 const mysqlJson = new MysqlJson({
   host:'127.0.0.1',
@@ -19,7 +20,7 @@ const kafkaConf = {
   };
 
 const prefix = "w7rglkzc-";
-const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`]
+const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`,`${prefix}weather`]
 const producer = new Kafka.Producer(kafkaConf);
 
 function sendmsg(msg, topic){
@@ -63,17 +64,33 @@ function get2land(){
   });
 }
 
-mysqlJson.connect(function(err, response){
-  if(err) throw err;
-  console.log('producer connected');
-});
+function get_weather(){
+  const params = {
+    access_key: '3a5c517fbb651008e36c76ef39054cf9',
+    query: 'Tel Aviv',
+    units: 'm'
+  };
+  const url = `http://api.weatherstack.com/current`;
+  axios.get(url, {params})  
+  .then(response => {
+    //console.log(response);
+    sendmsg(response, topics[3]);
+  }).catch(error => {
+    console.log(error);
+  });
+}
 
 module.exports.produce= function(time)
 { 
+  mysqlJson.connect(function(err, response){
+    if(err) throw err;
+    console.log('producer connected');
+  });
   producer.connect();
   setInterval(() => {
     get_total_data();
     get2fligh();
     get2land();
+    get_weather();
   }, time)
 }
