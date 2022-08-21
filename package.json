@@ -1,0 +1,23 @@
+{
+  "name": "airapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker": "docker run --name airsql2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD='Aa123456' -d mysql:5"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.17.1",
+    "flight-data": "^2.0.3",
+    "flightradar24-client": "^0.3.0",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "mysql-json": "^0.1.3",
+    "node-rdkafka": "^2.13.0",
+    "nodemon": "^2.0.4"
+  }
+}
