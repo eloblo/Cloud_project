@@ -20,6 +20,13 @@ const kafkaConf = {
   };
 
 const prefix = "w7rglkzc-";
+// default: returns an array of all flights and their information. importently location, schedules, delay, country of origin and destinetion
+// 2fligh: returns an array of up to the length of 2 [to_fligh: number, ...]. the sum of numbers is the number of total planes that will takeof in the next 15 minutes
+// 2land: returns an array of up to the length of 2 [to_land: number, ...]. the sum of numbers is the number of total planes that will land in the next 15 minutes
+// weather: returns data of the current weather in TLV (untis are in metrics) example:
+// {"observation_time":"02:14 PM","temperature":32,"weather_code":113,"weather_icons":["https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png"],
+// "weather_descriptions":["Sunny"],"wind_speed":20,"wind_degree":300,"wind_dir":"WNW","pressure":1004,"precip":0,"humidity":43,"cloudcover":0,"feelslike":36,"uv_index":8,
+// "visibility":10,"is_day":"yes"}
 const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`,`${prefix}weather`]
 const producer = new Kafka.Producer(kafkaConf);
 
@@ -43,6 +50,7 @@ function get_total_data(){
 function get2fligh(){
   var now = Math.floor(Date.now() / 1000);
   var min = now + 900;
+  // mysql code for total flight waiting to takeof in the next 15 minutes
   mysqlJson.query(`SELECT COUNT(DISTINCT hex) to_fligh FROM flights_from f1 JOIN schedules_from s1 ON f1.flight_number=s1.cs_flight_number \
                   WHERE s1.status='scheduled' AND s1.dep_estimated_ts < ${min} UNION \
                   SELECT COUNT(DISTINCT hex) to_fligh FROM flights_from f2 JOIN schedules_from s2 ON f2.flight_number=s2.cs_flight_number \
@@ -55,6 +63,7 @@ function get2fligh(){
 function get2land(){
   var now = Math.floor(Date.now() / 1000);
   var min = now + 900;
+  // mysql code for total flight waiting to landf in the next 15 minutes
   mysqlJson.query(`SELECT COUNT(DISTINCT hex) to_land FROM flights_from f1 JOIN schedules_from s1 ON f1.flight_number=s1.cs_flight_number \
                   WHERE s1.status='active' AND s1.arr_estimated_ts < ${min} UNION \
                   SELECT COUNT(DISTINCT hex) to_land FROM flights_from f2 JOIN schedules_from s2 ON f2.flight_number=s2.cs_flight_number \
@@ -74,7 +83,7 @@ function get_weather(){
   axios.get(url, {params})  
   .then(response => {
     //console.log(response);
-    sendmsg(response, topics[3]);
+    sendmsg(response.data.current, topics[3]);
   }).catch(error => {
     console.log(error);
   });
