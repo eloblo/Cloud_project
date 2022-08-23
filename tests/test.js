@@ -1,26 +1,28 @@
-const flightdata = require('flight-data');
+//const flightdata = require('flight-data');
+const fs = require('fs');
+const axios = require('axios');
 
-flightdata.flights(
-    {
-      API_TOKEN: '95c3886ccf657ece4cc1b3e06e09d04c',
-      options: {
-        limit: 100,
-        dep_iata: 'TLV'
-      }
-    })
-    .then(response => {
-        var r = response.data
-        var i = 0
-        r.forEach(element => {
-         if(element.flight_status == 'active') {
-          console.log(element);
-          i ++;
-        } 
-        });
-        console.log(i)
-      })
-    .catch(error => {
-        console.log(error)
+const file = 'tests/data.txt';
+const params = {
+  api_key: 'c453d429-c2f1-42e5-b087-0a701ff0bccf',
+  arr_iata: 'TLV'
+}
+// http://api.aviationstack.com/v1/flights  95c3886ccf657ece4cc1b3e06e09d04c
+axios.get('https://airlabs.co/api/v9/schedules', {params})  
+  .then(response => {
+    var apiResponse = response.data.response;
+    var d = Buffer.from(JSON.stringify(apiResponse));
+    fs.appendFile(file, d, function(err){
+      if(err) {throw(err)}
     });
+    fs.appendFile(file, '\n^^^\n', function(err){
+      if(err) {throw(err)}
+    });
+  }).catch(error => {
+    console.log(error);
+});
+
+
+
 
 
