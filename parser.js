@@ -32,7 +32,7 @@ const opt = {fields};
 const parser = new Parser(opt);
 
 
-fs.readFile('C:\\Users\\elobl\\Downloads\\AirAPI\\Cloud_project\\tests\\data.txt', 'utf-8', function(err, data){
+fs.readFile('tests\\data.txt', 'utf-8', function(err, data){
     if(err){ console.log(err)}
     var d1 = JSON.parse(data);
     d1.forEach(element => {
