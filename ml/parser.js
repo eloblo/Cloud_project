@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // in iso 2 coding, value defined by un coding. holds only countries wuth direct flights to/from israel
 //countries = {'AT':40};
-// in iata coding. value defined by number of airports with direct flights to/from israel + country un code * 1000. total 147
+// in iata coding. value defined by number of airports with direct flights to/from israel + country un code * 1000.
 airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
 'HKG':156004, 'PVG':156005, 'CTU':156006, 'LCA':196001, 'PFO':196002, 'PRG':203001, 'CPH':208001, 'CAI':818001, 'HEL':246001, 'LBG':250001, 'CDG':250002, 'ORY':250003,
 'LYS':250004, 'BOD':250005, 'MRS':250006, 'NTE':250007, 'NCE':250008, 'TLS':250009, 'FKB':276001, 'BER':276002, 'DUS':276003, 'FRA':276004, 'HAM':276005, 'FMM':276006,
@@ -16,15 +16,8 @@ airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'V
 'JNB':710001, 'CPT':710002, 'ARN':752001, 'GVA':756001, 'BSL':756002, 'MLH':756002, 'EAP':756002, 'ZRH':756003, 'BKK':764001, 'IST':792001, 'ADB':792002,  // bsl has 3 iata codes
 'AYT':792003, 'AUH':784001, 'DXB':784002, 'LTN':826001, 'LHR':826002, 'MAN':826003, 'LGW':826004, 'ATL':840001, 'BOS':840002, 'ORD':840003, 'LAX':840004, 'MIA':840005,
 'JFK':840006, 'SFO':840007, 'IAD':840008, 'MLA':470001, 'MEX':484001, 'RIX':428001, 'MAD':724001, 'BCN':724002, 'SAW':792004, 'EWR':840009, 'BOJ':100003, 'KIV':498001,
-'ZIA':643008, 'DLM':792005, 'CMN':504003, 'BEG':688001, 'ADD':231001, 'PDL':620002, 'PVK':300013, 'BGY':380011, 'SSH':818002, 'AMM':400001, 'ETM':376002
+'ZIA':643008, 'DLM':792005, 'CMN':504003, 'BEG':688001, 'ADD':231001, 'PDL':620002, 'PVK':300013, 'BGY':380011, 'SSH':818002, 'AMM':400001, 'ETM':376002, 'HKT':764002
 };
-
-//var d = new Date('2022-08-21 19:00:00');
-//console.log(d.getHours());
-//console.log(d.getDate())    
-//console.log(d.getDay()+1);    // day of the week sun = 0, sat = 6
-//console.log(d.getMonth()+1);  // jan = 0, dec = 11
-//console.log(d.getFullYear());
 
 // dep_airport | arr_airport | month | day-date | day_week | hour | duration | delay (result)
 const fields = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'duration', 'delay'];
