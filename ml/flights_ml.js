@@ -18,4 +18,7 @@ app.get('/flight_delay', function(req,res) {
     })
 })
 
-const server = app.listen(4000);
+const port = 4000
+const server = app.listen(port);
+
+console.log(`flight_delay machine learning server on port ${port}`)

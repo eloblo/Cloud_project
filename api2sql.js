@@ -70,31 +70,31 @@ function init_connection(){
     console.log('connected to MYSQL');
   });
 
-  const flights_table_to = "CREATE TABLE IF NOT EXISTS flights_to (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
+  const flights_table_to = `CREATE TABLE IF NOT EXISTS ${tables[0][0]} (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
                           lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
                           flight_icao VARCHAR(32), flight_iata VARCHAR(32), dep_icao VARCHAR(16), dep_iata VARCHAR(16), arr_icao VARCHAR(16), arr_iata VARCHAR(16), \
-                          airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));"
+                          airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));`
 
-  const schedules_table_to = "CREATE TABLE IF NOT EXISTS schedules_to (airline_iata VARCHAR(16), airline_icao VARCHAR(16), flight_iata VARCHAR(32), flight_icao VARCHAR(32), \
+  const schedules_table_to = `CREATE TABLE IF NOT EXISTS ${tables[2][0]} (airline_iata VARCHAR(16), airline_icao VARCHAR(16), flight_iata VARCHAR(32), flight_icao VARCHAR(32), \
                               flight_number VARCHAR(16), dep_iata VARCHAR(16), dep_icao VARCHAR(16), dep_terminal VARCHAR(16), dep_gate VARCHAR(16), dep_time DATETIME, \
                               dep_time_utc DATETIME, dep_estimated DATETIME, dep_estimated_utc DATETIME, dep_actual DATETIME, dep_actual_utc DATETIME, arr_iata VARCHAR(16), \
                               arr_icao VARCHAR(16), arr_terminal VARCHAR(16), arr_gate VARCHAR(16), arr_baggage VARCHAR(16), arr_time DATETIME, arr_time_utc DATETIME,\
                               arr_estimated DATETIME, arr_estimated_utc DATETIME, cs_airline_iata VARCHAR(16), cs_flight_number VARCHAR(16), cs_flight_iata VARCHAR(32), \
                               dep_time_ts BIGINT, status VARCHAR(16), duration INT, delay INT, aircraft_icao VARCHAR(16), arr_time_ts BIGINT, \
-                              arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);"
+                              arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);`
                         
-  const flights_table_from = "CREATE TABLE IF NOT EXISTS flights_from (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
+  const flights_table_from = `CREATE TABLE IF NOT EXISTS ${tables[1][0]} (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
                               lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
                               flight_icao VARCHAR(32), flight_iata VARCHAR(32), dep_icao VARCHAR(16), dep_iata VARCHAR(16), arr_icao VARCHAR(16), arr_iata VARCHAR(16), \
-                              airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));"
+                              airline_icao VARCHAR(16), airline_iata VARCHAR(16), aircraft_icao VARCHAR(16), updated BIGINT, status VARCHAR(16));`
 
-  const schedules_table_from = "CREATE TABLE IF NOT EXISTS schedules_from (airline_iata VARCHAR(16), airline_icao VARCHAR(16), flight_iata VARCHAR(32), flight_icao VARCHAR(32), \
+  const schedules_table_from = `CREATE TABLE IF NOT EXISTS ${tables[3][0]} (airline_iata VARCHAR(16), airline_icao VARCHAR(16), flight_iata VARCHAR(32), flight_icao VARCHAR(32), \
                                 flight_number VARCHAR(16), dep_iata VARCHAR(16), dep_icao VARCHAR(16), dep_terminal VARCHAR(16), dep_gate VARCHAR(16), dep_time DATETIME, \
                                 dep_time_utc DATETIME, dep_estimated DATETIME, dep_estimated_utc DATETIME, dep_actual DATETIME, dep_actual_utc DATETIME, arr_iata VARCHAR(16), \
                                 arr_icao VARCHAR(16), arr_terminal VARCHAR(16), arr_gate VARCHAR(16), arr_baggage VARCHAR(16), arr_time DATETIME, arr_time_utc DATETIME,\
                                 arr_estimated DATETIME, arr_estimated_utc DATETIME, cs_airline_iata VARCHAR(16), cs_flight_number VARCHAR(16), cs_flight_iata VARCHAR(32), \
                                 dep_time_ts BIGINT, status VARCHAR(16), duration INT, delay INT, aircraft_icao VARCHAR(16), arr_time_ts BIGINT, \
-                                arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);"
+                                arr_estimated_ts BIGINT, dep_estimated_ts BIGINT, dep_actual_ts BIGINT);`
 
   
   // create tables
