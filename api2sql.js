@@ -33,7 +33,7 @@ async function getAPI(table, url, params){
       });
       Promise.all(apiResponse.map((object) => {
         return new Promise((resolve, reject) => {
-          if(object.status == 'active' || object.status == 'en-route' || object.status == 'scheduled'){
+          if(object.status != 'cancelled'){
             if(object.delayed){ 
               object.delay = object.delayed;
               delete object.delayed;

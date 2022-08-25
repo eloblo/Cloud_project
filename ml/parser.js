@@ -1,8 +1,6 @@
 const {Parser} = require('json2csv');
 const fs = require('fs');
 
-// in iso 2 coding, value defined by un coding. holds only countries wuth direct flights to/from israel
-//countries = {'AT':40};
 // in iata coding. value defined by number of airports with direct flights to/from israel + country un code * 1000.
 airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
 'HKG':156004, 'PVG':156005, 'CTU':156006, 'LCA':196001, 'PFO':196002, 'PRG':203001, 'CPH':208001, 'CAI':818001, 'HEL':246001, 'LBG':250001, 'CDG':250002, 'ORY':250003,
