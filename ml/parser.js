@@ -32,7 +32,7 @@ const opt = {fields};
 const parser = new Parser(opt);
 
 
-fs.readFile('./tests/data.txt', 'utf-8', function(err, data){
+fs.readFile('./ml/data.txt', 'utf-8', function(err, data){
     if(err){ console.log(err)}
     var d1 = JSON.parse(data);
     d1.forEach(element => {
@@ -57,7 +57,7 @@ fs.readFile('./tests/data.txt', 'utf-8', function(err, data){
                     delay: delay
                 } 
                 var js = parser.parse(j)
-                fs.appendFile('dataset.csv', js.slice(83), function(error){
+                fs.appendFile('./ml/dataset.csv', js.slice(83), function(error){
                     if(error) {throw error}
                 })
             }
