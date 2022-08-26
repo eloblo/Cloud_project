@@ -29,7 +29,7 @@ fs.readFile('./ml/data.txt', 'utf-8', function(err, data){
     d1.forEach(element => {
         if(!airports[element.dep_iata]) {console.log(`dep: ${element.dep_iata}`)}
         if(!airports[element.arr_iata]) {console.log(`arr: ${element.arr_iata}`)}
-        if(element.status == 'active' && airports[element.dep_iata] && airports[element.arr_iata] && element.duration){
+        if(element.status == 'landed' && airports[element.dep_iata] && airports[element.arr_iata] && element.duration){
             var delay = 0
             if(element.delayed){
                 if(element.delayed > 15){ delay = 1}
