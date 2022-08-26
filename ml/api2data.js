@@ -4,7 +4,7 @@ const axios = require('axios');
 const file = './ml/data.txt';
 const params = {
   api_key: 'c453d429-c2f1-42e5-b087-0a701ff0bccf',
-  dep_iata: 'TLV'
+  arr_iata: 'TLV'
 }
 axios.get('https://airlabs.co/api/v9/schedules', {params})  
   .then(response => {

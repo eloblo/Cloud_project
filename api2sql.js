@@ -53,7 +53,7 @@ async function getAPI(table, url, params){
         });
       })).then((response) => {
         // ALL data are inserted, you can continue here !
-        console.log(`uploaded data to ${table}`)
+        console.log(`Mysql: uploaded data to ${table}`)
       }, (err) => {
         console.error(err);
         // An error occured
@@ -113,7 +113,7 @@ function init_connection(){
   mysqlJson.query(schedules_table_from, function(err, response) {
     if (err) throw err;
   });
-  console.log('initialized MYSQL data sets');
+  console.log('System-a: initialized MYSQL data sets');
 }
 
 module.exports.connect_sql= function()
