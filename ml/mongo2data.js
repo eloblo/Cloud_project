@@ -51,7 +51,9 @@ MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         Promise.all(result.map((element) => {
             return new Promise((resolve, reject) => {
-                if(element.status == 'landed'){
+                if(!airports[element.dep_iata]) {console.log(`airports update needed new IATA dep: ${element.dep_iata}`)}
+                if(!airports[element.arr_iata]) {console.log(`airports update needed new IATA arr: ${element.arr_iata}`)}
+                if(element.status == 'landed' && airports[element.dep_iata] && airports[element.arr_iata]){
                     var delay = 0
                     if(element.delayed){
                         if(element.delayed > 15){ delay = 1}
