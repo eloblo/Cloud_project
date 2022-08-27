@@ -31,13 +31,12 @@ consumer.on('ready', () => {
     consumer.subscribe(topics);
     consumer.consume();
 }).on('data', (data) => {
-    // add whatever needs to be done with the newly uploaded kafka data
     var res = JSON.parse(data.value.toString())
-    console.log(res)
     res.forEach(flight => {
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
+            // no need for duplicated data. check if the flight exist in the database
             dbo.collection(collection).find(flight).toArray(function(err, result) {
                 if (err) throw err;
                 if(result.length == 0){

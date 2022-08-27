@@ -13,9 +13,6 @@ axios.get('https://airlabs.co/api/v9/schedules', {params})
     fs.appendFile(file, d, function(err){
       if(err) {throw(err)}
     });
-    fs.appendFile(file, '\n\n\n', function(err){
-      if(err) {throw(err)}
-    });
   }).catch(error => {
     console.log(error);
 });

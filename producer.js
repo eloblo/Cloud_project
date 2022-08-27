@@ -60,9 +60,9 @@ function get2fligh(){
   var now = Math.floor(Date.now() / 1000);
   var min = now + 900;
   // mysql code for total flight waiting to takeof in the next 15 minutes
-  mysqlJson.query(`SELECT COUNT(DISTINCT hex) to_fligh FROM ${tables[1]} \
+  mysqlJson.query(`SELECT COUNT(*) to_fligh FROM ${tables[3]} s1 \
                   WHERE s1.status='scheduled' AND s1.dep_estimated_ts IS NOT NULL AND s1.dep_estimated_ts < ${min} UNION \
-                  SELECT COUNT(DISTINCT hex) to_fligh FROM ${tables[0]}  \
+                  SELECT COUNT(*) to_fligh FROM ${tables[2]} s2 \
                   WHERE s2.status='scheduled' AND s2.dep_estimated_ts IS NOT NULL AND s2.dep_estimated_ts < ${min};`, function(err, response) {
     if (err) throw err;
     sendmsg(response, topics[1]);

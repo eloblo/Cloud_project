@@ -1,5 +1,13 @@
+const MongoClient = require('mongodb').MongoClient;
 const {Parser} = require('json2csv');
 const fs = require('fs');
+
+
+
+const port = 27017
+const database = "flights"
+const collection = "historical"
+const url = `mongodb://localhost:${port}`;
 
 // in iata coding. value defined by number of airports with direct flights to/from israel + country un code * 1000.
 airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
@@ -22,40 +30,61 @@ const fields = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', '
 const opt = {fields};
 const parser = new Parser(opt);
 const header = '"dep_airport","arr_airport","month","day_date","day_week","hour","duration","delay"'
+const dataset = './ml/dataset_flights.csv'
 
+fs.readFile(dataset, 'utf-8', function(err, data){
+    if(err) throw err;
+    fs.writeFile(`${dataset}-backup.csv`, data, function(err){
+        if(err) throw err;
+        console.log("backup dataset was created");
+        fs.writeFile(dataset, header, function(error){
+            if(error) throw error;
+            console.log(`${dataset} was created`)
+        })
+    })
+});
 
-fs.readFile('./ml/data.txt', 'utf-8', function(err, data){
-    if(err){ console.log(err)}
-    var d1 = JSON.parse(data);
-    d1.forEach(element => {
-        if(!airports[element.dep_iata]) {console.log(`dep: ${element.dep_iata}`)}
-        if(!airports[element.arr_iata]) {console.log(`arr: ${element.arr_iata}`)}
-        if(element.status == 'landed'){
-            var delay = 0
-            if(element.delayed){
-                if(element.delayed > 15){ delay = 1}
-                if(element.delayed > 60){ delay = 2}
-            }
-            try{
-                var d = new Date(element.dep_time);
-                var j = {
-                    dep_airport: airports[element.dep_iata],
-                    arr_airport: airports[element.arr_iata],
-                    month: d.getMonth() + 1,
-                    day_date: d.getDate(),
-                    day_week: d.getDay() + 1,
-                    hour: d.getHours(),
-                    duration: element.duration,
-                    delay: delay
-                } 
-                var js = parser.parse(j)
-                fs.appendFile('./ml/dataset.csv', js.slice(header.length), function(error){
-                    if(error) {throw error}
-                })
-            }
-            catch (error) {
-                console.log(error);
-            }
-        }
+MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db(database);
+    dbo.collection(collection).find({}).toArray(function(err, result) {
+        if (err) throw err;
+        Promise.all(result.map((element) => {
+            return new Promise((resolve, reject) => {
+                if(element.status == 'landed'){
+                    var delay = 0
+                    if(element.delayed){
+                        if(element.delayed > 15){ delay = 1}
+                        if(element.delayed > 60){ delay = 2}
+                    }
+                    try{
+                        var date = new Date(element.dep_time);
+                        var js = {
+                            dep_airport: airports[element.dep_iata],
+                            arr_airport: airports[element.arr_iata],
+                            month: date.getMonth() + 1,
+                            day_date: date.getDate(),
+                            day_week: date.getDay() + 1,
+                            hour: date.getHours(),
+                            duration: element.duration,
+                            delay: delay
+                        } 
+                        var data = parser.parse(js)
+                        fs.appendFile(dataset, data.slice(header.length), function(error){
+                            if(error) {throw error}
+                            else resolve()
+                        })
+                    }
+                    catch (error) {
+                        console.log(error);
+                        reject(error);
+                    }
+                }
+                else resolve()
+            })
+        })).then((done) => {
+            console.log(`${dataset} was updated`);
+            db.close();
+        })
     });
 })
