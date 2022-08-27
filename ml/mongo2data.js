@@ -31,15 +31,19 @@ const opt = {fields};
 const parser = new Parser(opt);
 const header = '"dep_airport","arr_airport","month","day_date","day_week","hour","duration","delay"'
 const dataset = './ml/dataset_flights.csv'
+const org = './ml/dataset.csv'
 
 fs.readFile(dataset, 'utf-8', function(err, data){
     if(err) throw err;
     fs.writeFile(`${dataset}-backup.csv`, data, function(err){
         if(err) throw err;
         console.log("backup dataset was created");
-        fs.writeFile(dataset, header, function(error){
-            if(error) throw error;
-            console.log(`${dataset} was created`)
+        fs.readFile(org, 'utf-8', function(err, org_data){
+            if(err) throw err;
+            fs.writeFile(dataset, org_data, function(error){
+                if(error) throw error;
+                console.log(`${dataset} was created`)
+            })
         })
     })
 });
