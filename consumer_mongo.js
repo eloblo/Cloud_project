@@ -25,30 +25,32 @@ const collection = "historical"
 const url = `mongodb://localhost:${port}`;
 
 
-
-consumer.connect();
-consumer.on('ready', () => {
-    consumer.subscribe(topics);
-    consumer.consume();
-}).on('data', (data) => {
-    var res = JSON.parse(data.value.toString())
-    res.forEach(flight => {
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db(database);
-            // no need for duplicated data. check if the flight exist in the database
-            dbo.collection(collection).find(flight).toArray(function(err, result) {
+module.exports.save_flights = function(){
+    consumer.connect();
+    consumer.on('ready', () => {
+        consumer.subscribe(topics);
+        console.log('consumer mongodb: connected and ready')
+        consumer.consume();
+    }).on('data', (data) => {
+        var res = JSON.parse(data.value.toString())
+        res.forEach(flight => {
+            MongoClient.connect(url, function(err, db) {
                 if (err) throw err;
-                if(result.length == 0){
-                    dbo.collection(collection).insertOne(flight, function(err, response){
-                        if (err) throw err;
-                        console.log(`mongodb: flight ${flight.cs_flight_number} was uploaded`)
-                    })
-                }
+                var dbo = db.db(database);
+                // no need for duplicated data. check if the flight exist in the database
+                dbo.collection(collection).find(flight).toArray(function(err, result) {
+                    if (err) throw err;
+                    if(result.length == 0){
+                        dbo.collection(collection).insertOne(flight, function(err, response){
+                            if (err) throw err;
+                            console.log(`mongodb: flight ${flight.cs_flight_number} was uploaded`)
+                        })
+                    }
+                });
             });
         });
-    });
-})
+    })
+}
 
 
 
