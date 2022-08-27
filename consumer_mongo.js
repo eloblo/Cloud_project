@@ -35,17 +35,15 @@ consumer.on('ready', () => {
     var res = JSON.parse(data.value.toString())
     console.log(res)
     res.forEach(flight => {
-        var hex = flight.hex;
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db(database);
-            var query = { hex: hex };
-            dbo.collection(collection).find(query).toArray(function(err, result) {
+            dbo.collection(collection).find(flight).toArray(function(err, result) {
                 if (err) throw err;
                 if(result.length == 0){
                     dbo.collection(collection).insertOne(flight, function(err, response){
                         if (err) throw err;
-                        console.log(`mongodb: flight ${hex} was uploaded`)
+                        console.log(`mongodb: flight ${flight.cs_flight_number} was uploaded`)
                     })
                 }
             });
