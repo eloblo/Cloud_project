@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const {Parser} = require('json2csv');
 const fs = require('fs');
-
+const {PythonShell} = require('python-shell');
 
 
 const port = 27017
@@ -91,6 +91,10 @@ MongoClient.connect(url, function(err, db) {
         })).then((done) => {
             console.log(`${dataset} was updated`);
             db.close();
+            PythonShell.run('/create_model.py', null, function (err, results) {
+                if (err) {throw err};
+                console.log('machine learning model was updated')
+            })
         })
     });
 })
