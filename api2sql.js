@@ -2,8 +2,8 @@ const axios = require('axios');
 const express = require('express');
 const MysqlJson = require('mysql-json');
 
-const mysqlJson = new MysqlJson({
-  host:'0.0.0.0',
+const mysqlJson = new MysqlJson({  // make sure it matches mysql docker
+  host:'0.0.0.0',     
   user:'root',
   password:'Aa123456',
   database:'mysql'
@@ -56,7 +56,6 @@ async function getAPI(table, url, params){
         console.log(`Mysql: uploaded data to ${table}`)
       }, (err) => {
         console.error(err);
-        // An error occured
       });
     }).catch(error => {
       console.log(error);
@@ -66,10 +65,9 @@ async function getAPI(table, url, params){
 function init_connection(){
   mysqlJson.connect(function(err, response){
     if(err) throw err;
-    //console.log(response)
-    console.log('connected to MYSQL');
+    console.log('System-a: connected to MYSQL');
   });
-
+  // if exist create the tables in tables[x][0]. table format according to air lab response format
   const flights_table_to = `CREATE TABLE IF NOT EXISTS ${tables[0][0]} (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
                           lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
                           flight_icao VARCHAR(32), flight_iata VARCHAR(32), dep_icao VARCHAR(16), dep_iata VARCHAR(16), arr_icao VARCHAR(16), arr_iata VARCHAR(16), \

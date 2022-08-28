@@ -35,14 +35,16 @@ const org = './ml/dataset.csv'
 
 fs.readFile(dataset, 'utf-8', function(err, data){
     if(err) throw err;
-    fs.writeFile(`${dataset}-backup.csv`, data, function(err){
+    // save a backup data set to avoid valuble data loss
+    fs.writeFile(`system-c: ${dataset}-backup.csv`, data, function(err){
         if(err) throw err;
-        console.log("backup dataset was created");
+        console.log("system-c: backup dataset was created");
+        // read the default dataset to be concated with the data from mongodb 
         fs.readFile(org, 'utf-8', function(err, org_data){
             if(err) throw err;
             fs.writeFile(dataset, org_data, function(error){
                 if(error) throw error;
-                console.log(`${dataset} was created`)
+                console.log(`system-c: ${dataset} was created`)
             })
         })
     })
@@ -55,8 +57,8 @@ MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         Promise.all(result.map((element) => {
             return new Promise((resolve, reject) => {
-                if(!airports[element.dep_iata]) {console.log(`airports update needed new IATA dep: ${element.dep_iata}`)}
-                if(!airports[element.arr_iata]) {console.log(`airports update needed new IATA arr: ${element.arr_iata}`)}
+                if(!airports[element.dep_iata]) {console.log(`system-c: airports update needed new IATA dep: ${element.dep_iata}`)}
+                if(!airports[element.arr_iata]) {console.log(`system-c: airports update needed new IATA arr: ${element.arr_iata}`)}
                 if(element.status == 'landed' && airports[element.dep_iata] && airports[element.arr_iata]){
                     var delay = 0
                     if(element.delayed){
@@ -89,11 +91,12 @@ MongoClient.connect(url, function(err, db) {
                 else resolve()
             })
         })).then((done) => {
-            console.log(`${dataset} was updated`);
+            console.log(`system-c: ${dataset} was updated`);
             db.close();
+            // after updating the dataset create a new ML model for it
             PythonShell.run('/create_model.py', null, function (err, results) {
                 if (err) {throw err};
-                console.log('machine learning model was updated')
+                console.log('system-c: machine learning model was updated')
             })
         })
     });

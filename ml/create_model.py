@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 import pickle
 
+# create a ML model and save it as a file to reduce time
+
 dataset = './ml/dataset.csv'
 mod_file = './ml/model.pkl'
 df = pd.read_csv(dataset)

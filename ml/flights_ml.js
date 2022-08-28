@@ -13,6 +13,7 @@ app.get('/flight_delay', function(req,res) {
           scriptPath: './ml', 
         args: [req.query.dep_airport, req.query.arr_airport, req.query.month, req.query.day_date, req.query.day_week, req.query.hour, req.query.duration] 
     };
+    // run the ML script and send the result
     PythonShell.run(script, options, function (err, results) {
         if (err) {throw err};
         res.send(results);
@@ -22,6 +23,6 @@ app.get('/flight_delay', function(req,res) {
 const port = 4000
 const server = app.listen(port);
 
-console.log(`flight_delay machine learning server on port ${port}`)
-
+console.log(`system-c: flight_delay machine learning server on port ${port}`)
+// start consuming landed flight data and upload to mongodb
 consumer.save_flights()

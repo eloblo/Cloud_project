@@ -2,8 +2,8 @@ const Kafka = require("node-rdkafka");
 const MysqlJson = require('mysql-json');
 const axios = require('axios');
 
-const mysqlJson = new MysqlJson({
-  host:'127.0.0.1',
+const mysqlJson = new MysqlJson({ // make sure it matches mysql docker
+  host:'0.0.0.0',
   user:'root',
   password:'Aa123456',
   database:'mysql'
@@ -109,7 +109,7 @@ module.exports.produce= function(time)
 { 
   mysqlJson.connect(function(err, response){
     if(err) throw err;
-    console.log('producer connected');
+    console.log('system-a: producer connected');
   });
   producer.connect();
   setInterval(() => {
