@@ -1,6 +1,6 @@
 const exp = require('express');
 const {PythonShell} = require('python-shell');
-const consumer = require('./../consumer_mongo');
+const consumer = require('../consumer_mongo');
 
 const script = 'ml.py';  // will respond: Normal <= 15, Late > 15, Delayed > 60
 const app = exp();
