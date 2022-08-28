@@ -3,7 +3,7 @@ const express = require('express');
 const MysqlJson = require('mysql-json');
 
 const mysqlJson = new MysqlJson({
-  host:'127.0.0.1',
+  host:'0.0.0.0',
   user:'root',
   password:'Aa123456',
   database:'mysql'
