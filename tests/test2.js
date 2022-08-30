@@ -1,5 +1,4 @@
 const axios = require('axios');
-const e = require('express');
 
 // use schedules endpoint to get the arrival time by merging by flights flight_number to schedules cs_flight_number
 // drop all flights who's status is not en-route/active or alt = 0
