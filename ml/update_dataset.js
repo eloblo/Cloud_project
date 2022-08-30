@@ -37,7 +37,7 @@ const org = './ml/dataset.csv'
 fs.readFile(dataset, 'utf-8', function(err, data){
     if(err) throw err;
     // save a backup data set to avoid valuble data loss
-    fs.writeFile(`system-c: ${dataset}-backup.csv`, data, function(err){
+    fs.writeFile(`${dataset}-backup.csv`, data, function(err){
         if(err) throw err;
         console.log("system-c: backup dataset was created");
         // read the default dataset to be concated with the data from mongodb 
@@ -95,7 +95,7 @@ MongoClient.connect(url, function(err, db) {
             console.log(`system-c: ${dataset} was updated`);
             db.close();
             // after updating the dataset create a new ML model for it
-            PythonShell.run('/create_model.py', null, function (err, results) {
+            PythonShell.run('./ml/create_model.py', null, function (err, results) {
                 if (err) {throw err};
                 console.log('system-c: machine learning model was updated')
             })
