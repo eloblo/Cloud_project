@@ -38,9 +38,6 @@ function sendmsg(msg, topic){
   if(data != '[]') {
     producer.produce(topic, -1, Buffer.from(data));
   }
-  else{
-    console.log(data)
-  }
 }
 
 function get_total_data(){
@@ -91,7 +88,6 @@ function get_weather(){
   const url = `http://api.weatherstack.com/current`;
   axios.get(url, {params})  
   .then(response => {
-    //console.log(response);
     sendmsg(response.data.current, topics[3]);
   }).catch(error => {
     console.log(error);
@@ -105,18 +101,18 @@ function get_landed(){
   })
 }
 
-module.exports.produce= function(time)
+module.exports.produce= async function(time)
 { 
   mysqlJson.connect(function(err, response){
     if(err) throw err;
-    console.log('system-a: producer connected');
   });
-  producer.connect();
+  await producer.connect();
+  console.log('system-a: producer connected');
   setInterval(() => {
     get_total_data();
     get2fligh();
     get2land();
-    get_weather();
+    //get_weather();
     get_landed();
-  }, time)
+  }, time);
 }
