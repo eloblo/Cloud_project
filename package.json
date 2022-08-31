@@ -1,0 +1,27 @@
+{
+  "name": "cloud_project",
+  "description": "",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eloblo/Cloud_project.git"
+  },
+  "author": "Itamar Almog",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eloblo/Cloud_project/issues"
+  },
+  "homepage": "https://github.com/eloblo/Cloud_project#readme",
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.5.1"
+  },
+  "devDependencies": {
+    "daemon": "^1.1.0"
+  }
+}
