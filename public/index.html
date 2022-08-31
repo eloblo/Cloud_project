@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+      .container {
+        margin: auto calc(50% - 400px) auto calc(50% - 400px);
+      }
+
+      .map {
+        position: relative;
+        width: 800px;
+        height: 600px;
+      }
+
+      .header {
+        height: 100px;
+      }
+
+      .footer {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header"></div>
+      <div class="map">
+        <div id="map"></div>
+      </div>
+      <div class="footer">
+        <button type="button" onclick="alert('Hello world!')">Click Me!</button>
+        <button id="testBtn" type="button">Test!</button>
+      </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+
+    <!-- Reference to the Bing Maps SDK -->
+    <script
+      type="text/javascript"
+      src="http://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Atid-dQvyi_iSrpKp21vWO-5YIISW51PZRqv9pOoc68K-h2dyzf4YCgKqhQgFsYT"
+      async
+      defer
+    ></script>
+  </body>
+</html>
