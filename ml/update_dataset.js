@@ -27,10 +27,10 @@ airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'V
 };
 
 // dep_airport | arr_airport | month | day-date | day_week | hour | duration | delay (result)
-const fields = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'duration', 'delay'];
+const fields = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'dep_delay', 'duration', 'delay'];
 const opt = {fields};
 const parser = new Parser(opt);
-const header = '"dep_airport","arr_airport","month","day_date","day_week","hour","duration","delay"'
+const header = '"dep_airport","arr_airport","month","day_date","day_week","hour","dep_delay","duration","delay"'
 const dataset = './ml/dataset_flights.csv'
 const org = './ml/dataset.csv'
 
@@ -66,6 +66,11 @@ MongoClient.connect(url, function(err, db) {
                         if(element.delayed > 15){ delay = 1}
                         if(element.delayed > 60){ delay = 2}
                     }
+                    var dep_delayed = 0
+                    if(element.dep_delayed){
+                        if(element.dep_delayed > 15){ dep_delayed = 1}
+                        if(element.dep_delayed > 60){ dep_delayed = 2}
+                    }
                     try{
                         var date = new Date(element.dep_time);
                         var js = {
@@ -75,6 +80,7 @@ MongoClient.connect(url, function(err, db) {
                             day_date: date.getDate(),
                             day_week: date.getDay() + 1,
                             hour: date.getHours(),
+                            dep_delay: dep_delayed,
                             duration: element.duration,
                             delay: delay
                         } 

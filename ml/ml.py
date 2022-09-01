@@ -4,7 +4,7 @@ import pandas as pd
 
 # load the model from the .pkl file and predict the delay
 
-columns = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'duration']
+columns = ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'dep_delay', 'duration']
 data = [sys.argv[1:]]
 mod_file = './ml/model.pkl'
 try:
