@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cloud Project</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="root">
+      <div class="header"></div>
+      <div class="map">
+        <div id="map"></div>
+      </div>
+      <div class="footer">
+        <button id="testBtn">Test!</button>
+      </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+
+    <!-- Reference to the Bing Maps SDK -->
+    <script
+      type="text/javascript"
+      src="http://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Atid-dQvyi_iSrpKp21vWO-5YIISW51PZRqv9pOoc68K-h2dyzf4YCgKqhQgFsYT"
+      async
+      defer
+    ></script>
+  </body>
+</html>

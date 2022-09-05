@@ -1,0 +1,17 @@
+.root {
+  margin: auto calc(50% - 400px) auto calc(50% - 400px);
+}
+
+.header {
+  height: 100px;
+}
+
+.map {
+  position: relative;
+  width: 800px;
+  height: 600px;
+}
+
+.footer {
+  margin-top: 10px;
+}
