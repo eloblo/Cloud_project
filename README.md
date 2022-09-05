@@ -8,3 +8,5 @@ The project is based on MicroServices design.
 solution - make sure that you fill the port with 3306, and the address is 0.0.0.0
 
 2. Image we are running on its mysql:5 (not latest)
+
+3. npm clean-install
