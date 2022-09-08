@@ -40,5 +40,5 @@ consumer.on('ready', () => {
       flag = false
     }
     redis.insert_data(data.value.toString());
-    redis.quit()
+    redis.pull_all();
 })
