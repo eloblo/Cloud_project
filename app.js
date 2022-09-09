@@ -4,6 +4,11 @@ const express = require("express");
 const fs = require("fs");
 const http = require("http");
 const { Server } = require("socket.io");
+const redis = require('./redis.js')
+const kafka_default = require('./consumers/consumer_default.js')
+const kafka_2land = require('./consumers/consumer_2land.js')
+const kafka_2fligh = require('./consumers/consumer_2flight.js')
+//const kafka_weather = require('./consumers/consumer_weather.js')
 
 // config
 const PORT = 8080;
@@ -20,9 +25,11 @@ const io = new Server(server);
 let test_flight_data = null;
 let counter = 0;
 
-function initServer() {
-  const rawdata = fs.readFileSync("./data/test_flight_data_1.json");
-  test_flight_data = JSON.parse(rawdata);
+async function initServer() {
+  //const rawdata = fs.readFileSync("./data/test_flight_data_1.json");
+  //test_flight_data = JSON.parse(rawdata);
+  redis.connect_db()
+  test_flight_data = await redis.get_flights();
 }
 
 initServer();
@@ -64,11 +71,11 @@ io.on("connection", (socket) => {
     io.emit("get_test_data", res);
   });
 
-  const interval = setInterval(() => {
+  const interval = setInterval(async () => {
     console.log(`INFO ${counter}: refrsh_data`);
 
-    const rawdata = fs.readFileSync(`./data/test_flight_data_${counter}.json`);
-    test_flight_data = JSON.parse(rawdata);
+    //const rawdata = fs.readFileSync(`./data/test_flight_data_${counter}.json`);
+    test_flight_data = await redis.get_flights();
 
     const res = {
       flights: test_flight_data,
@@ -76,6 +83,6 @@ io.on("connection", (socket) => {
 
     io.emit("refrsh_data", res);
 
-    counter = (counter + 1) % 7;
+    //counter = (counter + 1) % 7;
   }, UPDATE_DELEY);
 });

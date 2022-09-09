@@ -1,5 +1,4 @@
 const axios = require('axios');
-const express = require('express');
 const MysqlJson = require('mysql-json');
 
 
@@ -22,25 +21,30 @@ const tables = [['flights_to', flight_api,{api_key: key, arr_iata: 'TLV'}],
 async function getAPI(table, url, params){
 // use schedules endpoint to get the arrival time by merging flights flight_number to schedules cs_flight_number
 // need seperate params for departure and arrival, api cannot do or between oprions only and
-  let response = await axios.get(url, {params})  
-  var apiResponse = response.data.response;
-  await mysqlJson.query("TRUNCATE "+table, function(err, res){})
-  for(var object of apiResponse) {
-    try{
-      if(object.status != 'cancelled'){
-        if(object.delayed){ 
-          object.delay = object.delayed;
-          delete object.delayed;
+  try{
+    let response = await axios.get(url, {params})  
+    var apiResponse = response.data.response;
+    await mysqlJson.query("TRUNCATE "+table, function(err, res){})
+    for(var object of apiResponse) {
+      try{
+        if(object.status != 'cancelled'){
+          if(object.delayed){ 
+            object.delay = object.delayed;
+            delete object.delayed;
+          }
+          else{
+            delete object.delayed;
+          }
         }
-        else{
-          delete object.delayed;
-        }
+          await mysqlJson.insert(table, object, function(err, res){});
       }
-        await mysqlJson.insert(table, object, function(err, res){});
+      catch (error){
+        console.log(error);
+      }
     }
-    catch (error){
-      console.log(error);
-    }
+  }
+  catch (error){
+    console.log(error);
   }
   console.log(`Mysql: uploaded data to ${table}`)
 }

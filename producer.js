@@ -110,9 +110,9 @@ module.exports.produce= async function(time)
   console.log('system-a: producer connected');
   setInterval(() => {
     get_total_data();
-    get2fligh();
-    get2land();
-    get_weather();
-    get_landed();
+    //get2fligh();
+    //get2land();
+    //get_weather();
+    //get_landed();
   }, time);
 }

@@ -39,6 +39,11 @@ consumer.on('ready', () => {
       redis.connect_db();
       flag = false
     }
+    var hexes = []
+    parsed_data = JSON.parse(data.value);
+    parsed_data.forEach(flight => {
+      hexes.push(flight.hex)
+    })
+    redis.set_flights(hexes);
     redis.insert_data(data.value.toString());
-    redis.pull_all();
 })

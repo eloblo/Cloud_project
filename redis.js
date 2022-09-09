@@ -1,7 +1,8 @@
 const redis = require('redis');
 
-const redisClient = redis.createClient(6379,'127.0.0.1');
+const redisClient = redis.createClient(6379,'0.0.0.0');
 const null_obj = 'Null object' 
+var hexes = []
 
 async function init_connection(){
     await redisClient.connect().then((response) => {},(err) => {
@@ -14,11 +15,11 @@ async function init_connection(){
 
 async function getValFromRedis(key,arr,len){
 
-    await redisClient.get(key).then((val)=>{
+    return await redisClient.get(key).then((val)=>{
         if(!val) throw null_obj
         json_obj = parse_to_json(val)
         json_obj["hex"] = key
-        push_to_arr(arr,json_obj,len)
+        return push_to_arr(arr,json_obj,len)
     }).catch((reason)=>{
         throw reason
     })   
@@ -26,23 +27,21 @@ async function getValFromRedis(key,arr,len){
 
 async function push_to_arr(arr,val,len){
     arr.push(val)
-    if (arr.length==len){
-        // Almog use arr here
-        console.log(arr)
-    }
+    return arr
 }
 
 
 async function getAllValues(a){
     c = []
-    a.forEach(element => {
-        getValFromRedis(element,c,a.length)
-    });
+    for(element of a){
+        await getValFromRedis(element,c,a.length)
+    }
+    return c
 }
 
 
 async function pullAllFlights(){
-    await redisClient.keys("*").then((val)=>{
+    return await redisClient.keys("*").then((val)=>{
         if(!val) throw null_obj
         // console.log(val)
         return val
@@ -50,7 +49,7 @@ async function pullAllFlights(){
             console.error(err)
         }
     ).then((val)=>{
-        getAllValues(val)
+        return getAllValues(val)
     }).catch((reason)=>{
         throw reason
     })
@@ -72,7 +71,7 @@ function parse_to_json(str_json){
 function insert_to_redis(data){
     json_data = parse_to_json(data)
     filghts_in_sky_arr = []
-    console.log('arr size: ' + json_data.length)
+    //console.log('arr size: ' + json_data.length)
     for(var i=0; i<json_data.length;i++){
         element = json_data[i];
         var id = element["hex"]
@@ -99,10 +98,20 @@ module.exports.insert_data= function(data)
 
 module.exports.pull_all= function()
 { 
-  pullAllFlights();
+  return pullAllFlights();
 }
 
 module.exports.quit= function()
 { 
   quit_func();
+}
+
+module.exports.set_flights= function(hex)
+{ 
+  hexes = hex;
+}
+
+module.exports.get_flights= async function(hex)
+{ 
+  return await getAllValues(hexes)
 }
