@@ -23,7 +23,7 @@ const topic = `${prefix}2land`;
 const topics = [topic];
 const consumer = new Kafka.KafkaConsumer(kafkaConf);
 
-console.log('consumer');
+console.log('consumer 2land');
 consumer.connect();
 consumer.on('ready', () => {
     consumer.subscribe(topics);

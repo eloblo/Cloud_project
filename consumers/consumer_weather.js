@@ -23,7 +23,7 @@ const topic = `${prefix}weather`;
 const topics = [topic];
 const consumer = new Kafka.KafkaConsumer(kafkaConf);
 
-console.log('consumer');
+console.log('consumer weather');
 consumer.connect();
 consumer.on('ready', () => {
     consumer.subscribe(topics);

@@ -23,7 +23,7 @@ const topic = `${prefix}2fligh`;
 const topics = [topic];
 const consumer = new Kafka.KafkaConsumer(kafkaConf);
 
-console.log('consumer');
+console.log('consumer 2fligh');
 consumer.connect();
 consumer.on('ready', () => {
     consumer.subscribe(topics);

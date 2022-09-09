@@ -26,7 +26,7 @@ const topics = [topic];
 const consumer = new Kafka.KafkaConsumer(kafkaConf);
 var connect_to_redis_flag = true
 
-console.log('consumer');
+console.log('consumer flights');
 consumer.connect();
 consumer.on('ready', () => {
     consumer.subscribe(topics);

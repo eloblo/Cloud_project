@@ -1,4 +1,6 @@
 const redis = require('redis');
+const kafka_default = require('./consumers/consumer_default.js')
+const kafka_weather = require('./consumers/consumer_weather.js')
 
 const redisClient = redis.createClient(6379,'0.0.0.0');
 const null_obj = 'Null object' 
