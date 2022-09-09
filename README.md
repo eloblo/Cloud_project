@@ -3,6 +3,19 @@
 a programing course project to create a web page to show in real time, the location and data of the current flights from and to Ben Gurion airport TLV.
 The project is based on MicroServices design.
 
+## Requirement
+Docker:
+* Redis:latest
+* Mongodb:latest
+* MYSQL:5
+
+Python:
+* Sklearn
+* Pandas
+* Pickle
+
+Node.js: run npm install
+
 ## Troubleshoot
 1. Error: connect ENOENT /var/run/mysqld/mysqld.sock
 solution - make sure that you fill the port with 3306, and the address is 0.0.0.0
