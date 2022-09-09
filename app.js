@@ -8,7 +8,7 @@ const redis = require('./redis.js')
 const kafka_default = require('./consumers/consumer_default.js')
 const kafka_2land = require('./consumers/consumer_2land.js')
 const kafka_2fligh = require('./consumers/consumer_2flight.js')
-//const kafka_weather = require('./consumers/consumer_weather.js')
+const kafka_weather = require('./consumers/consumer_weather.js')
 
 // config
 const PORT = 8080;
@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
   });
 
   const interval = setInterval(async () => {
-    console.log(`INFO ${counter}: refrsh_data`);
+    console.log(`INFO ${counter}: refresh_data`);
 
     //const rawdata = fs.readFileSync(`./data/test_flight_data_${counter}.json`);
     test_flight_data = await redis.get_flights();
