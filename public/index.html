@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cloud Project</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <meta name="viewport" content=
+        "width=device-width,
+        initial-scale=1.0" />
+ 
+    <title>Digital Clock</title>
+ 
+    <style>
+        #clock {
+            font-size: 80px;
+            width: 400px;
+            margin: 100px;
+            text-align: center;
+            border: 2px solid black;
+            border-radius: 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="root">
+      <div class="header"></div>
+      <div class="map">
+        <div id="map"></div>
+      </div>
+      <div class="footer">
+        <div id="clock">8:10:45</div>
+        <script type="text/javascript" src="/js/clock.js"></script>
+      </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+
+    <!-- Reference to the Bing Maps SDK -->
+    <script
+      type="text/javascript"
+      src="http://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Atid-dQvyi_iSrpKp21vWO-5YIISW51PZRqv9pOoc68K-h2dyzf4YCgKqhQgFsYT"
+      async
+      defer
+    ></script>
+  </body>
+</html>
+

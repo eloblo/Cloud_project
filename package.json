@@ -6,12 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "mysql": "docker run --name airsql2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD='Aa123456' -d mysql:5",
-    "mongo": "docker run --name flights_mongo -p 27017:27017 -d mongo"
+    "mongo": "docker run --name flights_mongo -p 27017:27017 -d mongo",
+    "start": "node app"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "flight-data": "^2.0.3",
     "flightradar24-client": "^0.3.0",
@@ -23,6 +25,7 @@
     "node-rdkafka": "^2.13.0",
     "nodemon": "^2.0.4",
     "python-shell": "^3.0.1",
-    "redis": "^4.3.0"
+    "redis": "^4.3.0",
+    "socket.io": "^4.5.2"
   }
 }

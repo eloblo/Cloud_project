@@ -1,9 +1,11 @@
 const exp = require('express');
 const {PythonShell} = require('python-shell');
 const consumer = require('./consumer_mongo');
+const cors = require('cors');
 
 const script = 'ml.py';  // will respond: Normal <= 15, Late > 15, Delayed > 60
 const app = exp();
+app.use(cors({origin: "*"}))
 
 // API call must contain parameters ['dep_airport', 'arr_airport', 'month', 'day_date', 'day_week', 'hour', 'dep_delay', 'duration']
 app.get('/flight_delay', function(req,res) {
