@@ -119,14 +119,14 @@ async function pushpinClicked(e) {
     infobox.setOptions({
       location: e.target.getLocation(),
       title: e.target.metadata.title,
-      description: `location: lat:${e.target.getLocation().latitude}, lng:${e.target.getLocation().longitude}\n
+      description: `location: lat:${e.target.getLocation().latitude}, lng:${e.target.getLocation().longitude} \n
       deprature: ${flight.dep_iata}, arrival: ${flight.arr_iata} \n
-      departure time UTC: ${flight.dep_time_utc}\n arrival time UTC: ${flight.arr_time_utc}\n 
+      departure time UTC: ${flight.dep_time_utc} \n            
+      arrival time UTC: ${flight.arr_time_utc} \n                
       estimated delay: ${js}`,
       visible: true,
     });
   }
-  //console.log("blabla " + e.target.getLocation().latitude+ "    " + e.target.getLocation().longitude)
 }
 
 function find_flight(hex){
