@@ -36,15 +36,37 @@ function refresh() {
   }
 }
 
+function createRedArrow(heading) {
+  var c = document.createElement('canvas');
+  c.width = 24;
+  c.height = 24;
+  var ctx = c.getContext('2d');
+  // Offset the canvas such that we will rotate around the center of our arrow
+  ctx.translate(c.width * 0.5, c.height * 0.5);
+  // Rotate the canvas by the desired heading
+  ctx.rotate(heading * Math.PI / 180);
+  //Return the canvas offset back to it's original position
+  ctx.translate(-c.width * 0.5, -c.height * 0.5);
+  ctx.fillStyle = '#f00';
+  // Draw a path in the shape of an arrow.
+  ctx.beginPath();
+  ctx.moveTo(12, 0);
+  ctx.lineTo(5, 20);
+  ctx.lineTo(12, 15);
+  ctx.lineTo(19, 20);
+  ctx.lineTo(12, 0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  // Generate the base64 image URL from the canvas.
+  return c.toDataURL();
+}
+
 async function createFlight(flight) {
   const title = flight.hex;
   const location = new Microsoft.Maps.Location(flight.lat, flight.lng);
   const description = `Discription of ${title}`; // 
-
-  const pin = new Microsoft.Maps.Pushpin(location, {
-    icon: icons.airplane,
-  });
-
+  const pin = new Microsoft.Maps.Pushpin(location,  { icon: createRedArrow(flight.dir)});
   pin.metadata = {
     title: `Title of ${title}`,
     description: description,
