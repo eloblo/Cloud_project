@@ -1,24 +1,58 @@
 const redis = require('redis');
-const redisClient = redis.createClient(6379,'127.0.0.1');
 
+const redisClient = redis.createClient(6379,'127.0.0.1');
 const null_obj = 'Null object' 
 
 async function init_connection(){
     await redisClient.connect().then((response) => {},(err) => {
-        console.error(err);
+        //console.error(err);
         // An error occured
+    }).catch((reason) =>{
+        throw reason
     });
 }
 
-async function getValFromRedis(key){
-   await redisClient.get(key).then((val)=>{
+async function getValFromRedis(key,arr,len){
+
+    await redisClient.get(key).then((val)=>{
         if(!val) throw null_obj
         json_obj = parse_to_json(val)
-        console.log(json_obj)
-        // Use the data here
+        json_obj["hex"] = key
+        push_to_arr(arr,json_obj,len)
+    }).catch((reason)=>{
+        throw reason
+    })   
+}
 
-    },(err) => {
-        console.error(err)
+async function push_to_arr(arr,val,len){
+    arr.push(val)
+    if (arr.length==len){
+        // Almog use arr here
+        console.log(arr)
+    }
+}
+
+
+async function getAllValues(a){
+    c = []
+    a.forEach(element => {
+        getValFromRedis(element,c,a.length)
+    });
+}
+
+
+async function pullAllFlights(){
+    await redisClient.keys("*").then((val)=>{
+        if(!val) throw null_obj
+        // console.log(val)
+        return val
+        },(err) => {
+            console.error(err)
+        }
+    ).then((val)=>{
+        getAllValues(val)
+    }).catch((reason)=>{
+        throw reason
     })
 }
 
@@ -37,7 +71,7 @@ function parse_to_json(str_json){
 
 function insert_to_redis(data){
     json_data = parse_to_json(data)
-    // new_arr = addId(json_data)
+    filghts_in_sky_arr = []
     console.log('arr size: ' + json_data.length)
     for(var i=0; i<json_data.length;i++){
         element = json_data[i];
@@ -53,23 +87,6 @@ function quit_func(){
     redisClient.quit()
 }
 
-a = 
-[
-        {
-          hex: '1',
-          reg_number: 'F-GSPX',
-          flag: 'Uriya',
-          lat: 45.8545,
-          lng: 7.50888},
-        {
-          hex: '2',
-          reg_number: 'F-GSPX',
-          flag: 'FR',
-          lat: 45.8545,
-          lng: 7.50888
-        }
-]
-
 module.exports.connect_db= function()
 { 
   init_connection();
@@ -78,6 +95,11 @@ module.exports.connect_db= function()
 module.exports.insert_data= function(data)
 { 
   insert_to_redis(data);
+}
+
+module.exports.pull_all= function()
+{ 
+  pullAllFlights();
 }
 
 module.exports.quit= function()
