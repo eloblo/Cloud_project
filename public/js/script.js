@@ -1,5 +1,6 @@
 // init socket
 const socket = io();
+<<<<<<< HEAD
 // const axios = require('axios');
 const airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
 'HKG':156004, 'PVG':156005, 'CTU':156006, 'LCA':196001, 'PFO':196002, 'PRG':203001, 'CPH':208001, 'CAI':818001, 'HEL':246001, 'LBG':250001, 'CDG':250002, 'ORY':250003,
@@ -16,6 +17,8 @@ const airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':1000
 'ZIA':643008, 'DLM':792005, 'CMN':504003, 'BEG':688001, 'ADD':231001, 'PDL':620002, 'PVK':300013, 'BGY':380011, 'SSH':818002, 'AMM':400001, 'ETM':376002, 'HKT':764002,
 'FRG':840010, 'FNC':620003, 'FLR':380012
 };
+=======
+>>>>>>> 46a464289ba6eda63a7bb816978e515273298b30
 // globals
 let map;
 let infobox;
@@ -52,7 +55,34 @@ function refresh() {
   }
 }
 
+function createRedArrow(heading) {
+  var c = document.createElement('canvas');
+  c.width = 24;
+  c.height = 24;
+  var ctx = c.getContext('2d');
+  // Offset the canvas such that we will rotate around the center of our arrow
+  ctx.translate(c.width * 0.5, c.height * 0.5);
+  // Rotate the canvas by the desired heading
+  ctx.rotate(heading * Math.PI / 180);
+  //Return the canvas offset back to it's original position
+  ctx.translate(-c.width * 0.5, -c.height * 0.5);
+  ctx.fillStyle = '#f00';
+  // Draw a path in the shape of an arrow.
+  ctx.beginPath();
+  ctx.moveTo(12, 0);
+  ctx.lineTo(5, 20);
+  ctx.lineTo(12, 15);
+  ctx.lineTo(19, 20);
+  ctx.lineTo(12, 0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  // Generate the base64 image URL from the canvas.
+  return c.toDataURL();
+}
+
 async function createFlight(flight) {
+<<<<<<< HEAD
   console.log(flight);
   var dep_delayed = 0
   if(flight.dep_delayed){
@@ -89,6 +119,12 @@ async function createFlight(flight) {
     icon: icons.airplane,
   });
 
+=======
+  const title = flight.hex;
+  const location = new Microsoft.Maps.Location(flight.lat, flight.lng);
+  const description = `Discription of ${title}`; // 
+  const pin = new Microsoft.Maps.Pushpin(location,  { icon: createRedArrow(flight.dir)});
+>>>>>>> 46a464289ba6eda63a7bb816978e515273298b30
   pin.metadata = {
     title: `Title of ${title}`,
     // description: description,
@@ -122,18 +158,12 @@ function flightByLocation(lat , lng){
 }
 
 // UI
-const testBtn = document.getElementById("testBtn");
-
 const takeTestData = () => {
   console.log("take test data");
   socket.emit("get_test_data", {});
 };
 
 window.addEventListener("load", function (e) {
-  takeTestData();
-});
-
-testBtn.addEventListener("click", function (e) {
   takeTestData();
 });
 
