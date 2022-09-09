@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "mysql": "docker run --name airsql2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD='Aa123456' -d mysql:5",
-    "mongo": "docker run --name flights_mongo -p 27017:27017 -d mongo"
+    "mongo": "docker run --name flights_mongo -p 27017:27017 -d mongo",
+    "start": "node app"
   },
   "author": "",
   "license": "ISC",

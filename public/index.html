@@ -4,12 +4,33 @@
     <title>Cloud Project</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/css/style.css" />
+
+    <meta name="viewport" content=
+        "width=device-width,
+        initial-scale=1.0" />
+ 
+    <title>Digital Clock</title>
+ 
+    <style>
+        #clock {
+            font-size: 80px;
+            width: 400px;
+            margin: 200px;
+            text-align: center;
+            border: 2px solid black;
+            border-radius: 20px;
+        }
+    </style>
   </head>
   <body>
     <div class="root">
       <div class="header"></div>
       <div class="map">
         <div id="map"></div>
+      </div>
+      <div class="footer">
+        <div id="clock">8:10:45</div>
+        <script type="text/javascript" src="/js/clock.js"></script>
       </div>
     </div>
 
@@ -26,3 +47,4 @@
     ></script>
   </body>
 </html>
+

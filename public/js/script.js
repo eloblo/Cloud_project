@@ -1,5 +1,6 @@
 // init socket
 const socket = io();
+
 // globals
 const airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
 'HKG':156004, 'PVG':156005, 'CTU':156006, 'LCA':196001, 'PFO':196002, 'PRG':203001, 'CPH':208001, 'CAI':818001, 'HEL':246001, 'LBG':250001, 'CDG':250002, 'ORY':250003,
@@ -78,32 +79,13 @@ function createRedArrow(heading) {
 }
 
 async function createFlight(flight) {
-  var dep_delayed = 0
-  if(flight.dep_delayed){
-      if(flight.dep_delayed > 15){ dep_delayed = 1}
-      if(flight.dep_delayed > 60){ dep_delayed = 2}
-  }
-
-  var date = new Date(flight.dep_time_utc)
-  const params = {
-    arr_airport: airports[flight.arr_iata],
-    dep_airport: airports[flight.dep_iata],
-    month: date.getMonth() +1,
-    day_date: date.getDate(),
-    day_week: date.getDay() +1,
-    hour: date.getHours(),
-    dep_delay: dep_delayed,
-    duration: flight.duration
-  }
-  var res = await fetch(`http://127.0.0.1:4000/flight_delay?arr_airport=${params.arr_airport}&dep_airport=${params.dep_airport}&month=${params.month}&day_date=${params.day_date}&day_week=${params.day_week}&hour=${params.hour}&duration=${params.duration}&dep_delay=${params.dep_delay}`)
-  var js = await res.json()
-  const title = flight.hex;
+  const title = flight.flight_iata;
   const location = new Microsoft.Maps.Location(flight.lat, flight.lng);
-  const description = `Discription of ${title} + ${js}`; // 
   const pin = new Microsoft.Maps.Pushpin(location,  { icon: createRedArrow(flight.dir)});
   pin.metadata = {
     title: `Title of ${title}`,
-    description: description,
+    flight: flight
+    // description: description,
   };
 
   // event handlers
@@ -113,14 +95,45 @@ async function createFlight(flight) {
   map.entities.push(pin);
 }
 
-function pushpinClicked(e) {
+async function pushpinClicked(e) {
   if (e.target.metadata) {
+    const flight = e.target.metadata.flight
+    var dep_delayed = 0
+    if(flight.dep_delayed){
+        if(flight.dep_delayed > 15){ dep_delayed = 1}
+        if(flight.dep_delayed > 60){ dep_delayed = 2}
+    }
+    var date = new Date(flight.dep_time_utc)
+    const params = {
+      arr_airport: airports[flight.arr_iata],
+      dep_airport: airports[flight.dep_iata],
+      month: date.getMonth() +1,
+      day_date: date.getDate(),
+      day_week: date.getDay() +1,
+      hour: date.getHours(),
+      dep_delay: dep_delayed,
+      duration: flight.duration
+    }
+    var res = await fetch(`http://127.0.0.1:4000/flight_delay?arr_airport=${params.arr_airport}&dep_airport=${params.dep_airport}&month=${params.month}&day_date=${params.day_date}&day_week=${params.day_week}&hour=${params.hour}&duration=${params.duration}&dep_delay=${params.dep_delay}`)
+    var js = await res.json()
     infobox.setOptions({
       location: e.target.getLocation(),
       title: e.target.metadata.title,
-      description: e.target.metadata.description,
+      description: `location: lat:${e.target.getLocation().latitude}, lng:${e.target.getLocation().longitude}\n
+      deprature: ${flight.dep_iata}, arrival: ${flight.arr_iata} \n
+      departure time UTC: ${flight.dep_time_utc}\n arrival time UTC: ${flight.arr_time_utc}\n 
+      estimated delay: ${js}`,
       visible: true,
     });
+  }
+  //console.log("blabla " + e.target.getLocation().latitude+ "    " + e.target.getLocation().longitude)
+}
+
+function find_flight(hex){
+  for (let i = 0; i < flights.length; i++) {
+    if(flights[i].hex == hex){
+      return flights[i];
+    }
   }
 }
 
