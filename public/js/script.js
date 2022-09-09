@@ -1,6 +1,6 @@
 // init socket
 const socket = io();
-const axios = require('axios');
+// const axios = require('axios');
 const airports = {'VIE':40001, 'BRU':56001, 'CRL':56002, 'BAH':48001, 'SOF':100001, 'VAR':100002, 'YUL':124001, 'YYZ':124002, 'PEK':156001, 'SZX':156002, 'CAN':156003,
 'HKG':156004, 'PVG':156005, 'CTU':156006, 'LCA':196001, 'PFO':196002, 'PRG':203001, 'CPH':208001, 'CAI':818001, 'HEL':246001, 'LBG':250001, 'CDG':250002, 'ORY':250003,
 'LYS':250004, 'BOD':250005, 'MRS':250006, 'NTE':250007, 'NCE':250008, 'TLS':250009, 'FKB':276001, 'BER':276002, 'DUS':276003, 'FRA':276004, 'HAM':276005, 'FMM':276006,
@@ -71,7 +71,7 @@ async function createFlight(flight) {
     dep_delay: dep_delayed,
     duration: flight.duration
   }
-  var data = await axios.get('http://127.0.0.1:4000/flight_delay', {params});
+  // var data = await axios.get('http://127.0.0.1:4000/flight_delay', {params});
   
   // axios.get('http://127.0.0.1:4000/flight_delay', {params})  
   //   .then(response => {
@@ -83,7 +83,7 @@ async function createFlight(flight) {
 
   const title = flight.hex;
   const location = new Microsoft.Maps.Location(flight.lat, flight.lng);
-  const description = `Discription of ${title} + late prediction: ${data} `; // 
+  const description = `Discription of ${title}`; // 
 
   const pin = new Microsoft.Maps.Pushpin(location, {
     icon: icons.airplane,
@@ -91,7 +91,7 @@ async function createFlight(flight) {
 
   pin.metadata = {
     title: `Title of ${title}`,
-    description: description,
+    // description: description,
   };
 
   // event handlers
@@ -106,9 +106,18 @@ function pushpinClicked(e) {
     infobox.setOptions({
       location: e.target.getLocation(),
       title: e.target.metadata.title,
-      description: e.target.metadata.description,
+      description: flightByLocation(e.target.getLocation().latitude , e.target.getLocation().longitude) + e.target.getLocation().latitude+ "    " + e.target.getLocation().longitude,
       visible: true,
     });
+  }
+  console.log("blabla " + e.target.getLocation().latitude+ "    " + e.target.getLocation().longitude)
+}
+
+function flightByLocation(lat , lng){
+  for (let i = 0; i < flights.length; i++) {
+    if(flights[i].lat == lat && flights[i].lng == lng){
+      return "hex:" + flights[i].hex + "\n";
+    }
   }
 }
 
