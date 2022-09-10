@@ -1,6 +1,4 @@
 const redis = require('redis');
-const kafka_default = require('./consumers/consumer_default.js')
-const kafka_weather = require('./consumers/consumer_weather.js')
 
 const redisClient = redis.createClient(6379,'0.0.0.0');
 const null_obj = 'Null object' 
@@ -79,7 +77,7 @@ function insert_to_redis(data){
         var id = element["hex"]
         delete element["hex"]
         str_rest = JSON.stringify(element)
-        console.log(`inserting flight number: ${id}`)
+        //console.log(`inserting flight number: ${id}`)
         setValToRedis(id,str_rest)
     }
 }
@@ -116,4 +114,18 @@ module.exports.set_flights= function(hex)
 module.exports.get_flights= async function(hex)
 { 
   return await getAllValues(hexes)
+}
+
+module.exports.set_value= async function(key, value)
+{ 
+  return await setValToRedis(key, value)
+}
+
+module.exports.get_value= async function(key)
+{ 
+    return await redisClient.get(key).then((val)=>{
+        return val
+    }).catch((reason)=>{
+        throw reason
+    }) 
 }

@@ -37,7 +37,7 @@ consumer.on('ready', () => {
     // connect to redis only once
     if(connect_to_redis_flag){
       redis.connect_db();
-      flag = false
+      connect_to_redis_flag = false
     }
     var hexes = []
     parsed_data = JSON.parse(data.value);

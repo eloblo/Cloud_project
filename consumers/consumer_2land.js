@@ -1,4 +1,5 @@
 const Kafka = require("node-rdkafka");
+const redis = require('../redis');
 
 const kafkaConf = {
   "group.id": "Ariel_cloud_project",
@@ -21,7 +22,9 @@ const prefix = "w7rglkzc-";
 //const topics = [`${prefix}default`,`${prefix}2fligh`,`${prefix}2land`,`${prefix}weather`]
 const topic = `${prefix}2land`;
 const topics = [topic];
+
 const consumer = new Kafka.KafkaConsumer(kafkaConf);
+var connect_to_redis_flag = true
 
 console.log('consumer 2land');
 consumer.connect();
@@ -30,5 +33,12 @@ consumer.on('ready', () => {
     consumer.consume();
 }).on('data', (data) => {
     // add whatever needs to be done with the newly uploaded kafka data
-    console.log("2land func: " +data.value.toString());  
+    if(connect_to_redis_flag){
+      redis.connect_db();
+      connect_to_redis_flag = false
+    }
+    var res = JSON.parse(data.value.toString());
+    var sum = res[0].to_land + res[1].to_land;
+    console.log(sum);
+    redis.set_value('2land',sum);
 })
