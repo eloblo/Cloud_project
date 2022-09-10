@@ -39,6 +39,5 @@ consumer.on('ready', () => {
     }
     var res = JSON.parse(data.value.toString());
     var sum = res[0].to_land + res[1].to_land;
-    console.log(sum);
     redis.set_value('2land',sum);
 })

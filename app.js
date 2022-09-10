@@ -1,13 +1,12 @@
 ("use strict");
 
 const express = require("express");
-const fs = require("fs");
+//const fs = require("fs");
 const http = require("http");
 const { Server } = require("socket.io");
 const redis = require('./redis.js')
-const consumers = require('./consumers/cons.js')
 const kafka_default = require('./consumers/consumer_default.js')
-const kafka_weather = require('./consumers/consumer_weather.js')
+
 
 // config
 const PORT = 8080;
