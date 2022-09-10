@@ -1,7 +1,6 @@
 ("use strict");
 
 const express = require("express");
-//const fs = require("fs");
 const http = require("http");
 const { Server } = require("socket.io");
 const redis = require('./redis.js')
@@ -24,8 +23,6 @@ let test_flight_data = null;
 let counter = 0;
 
 async function initServer() {
-  //const rawdata = fs.readFileSync("./data/test_flight_data_1.json");
-  //test_flight_data = JSON.parse(rawdata);
   redis.connect_db()
   test_flight_data = await redis.get_flights();
 }
@@ -70,17 +67,20 @@ io.on("connection", (socket) => {
   });
 
   const interval = setInterval(async () => {
-    console.log(`INFO ${counter}: refresh_data`);
-
-    //const rawdata = fs.readFileSync(`./data/test_flight_data_${counter}.json`);
+    console.log(`system-b: refresh_data`);
     test_flight_data = await redis.get_flights();
+    var to_fligh = await redis.get_value("2fligh");
+    var to_land = await redis.get_value("2land");
+    var str_weather = await redis.get_value("weather");
+    var weather = JSON.parse(str_weather.toString());
 
     const res = {
       flights: test_flight_data,
     };
 
     io.emit("refrsh_data", res);
-
-    //counter = (counter + 1) % 7;
+    io.emit("2fligh",to_fligh);
+    io.emit("2land",to_land);
+    io.emit("weather",weather);
   }, UPDATE_DELEY);
 });

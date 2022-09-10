@@ -23,13 +23,42 @@
     </style>
   </head>
   <body>
+    <div class="header">
+      <div class="card">
+        <img src="/images/takeoff.png" alt="Avatar" style="width:5%">
+        <div class="container" id="2fligh">
+          <h1><b>Flights before take off</b></h1>
+          <h2><b>0<b></h2>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/2fligh.js"></script>
+      </div>
+      <div class="card">
+        <img src="/images/landing.png" alt="Avatar" style="width:5%">
+        <div class="container" id="2land">
+          <h1><b>Flights before landing</b></h1>
+          <h2><b>0<b></h2>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/2land.js"></script>
+      </div>
+      <div class="card">
+        <img src="/images/weather.png" alt="Avatar" style="width:5%">
+        <div class="container" id="weather">
+          <h1><b>Current tempeture at TLV</b></h1>
+          <h2><b>0 C<b></h2>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/weather.js"></script>
+      </div>
+    </div>
     <div class="root">
       <div class="header"></div>
-      <div class="map">
+      <div class="map" style="margin: 0px;">
         <div id="map"></div>
       </div>
       <div class="footer">
-        <div id="clock">8:10:45</div>
+        <div id="clock">00:00:00</div>
         <script type="text/javascript" src="/js/clock.js"></script>
       </div>
     </div>

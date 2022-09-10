@@ -38,6 +38,8 @@ consumer.on('ready', () => {
       connect_to_redis_flag = false
     }
     var res = JSON.parse(data.value.toString());
-    var sum = res[0].to_land + res[1].to_land;
+    var sum = 0;
+    if(res[0] && res[0].to_land) {sum = sum + res[0].to_land}
+    if(res[1] && res[1].to_land) {sum = sum + res[1].to_land}
     redis.set_value('2land',sum);
 })

@@ -37,6 +37,8 @@ consumer.on('ready', () => {
       connect_to_redis_flag = false
     }
     var res = JSON.parse(data.value.toString());
-    var sum = res[0].to_fligh + res[1].to_fligh;
+    var sum = 0;
+    if(res[0] && res[0].to_fligh) {sum = sum + res[0].to_fligh}
+    if(res[1] && res[1].to_fligh) {sum = sum + res[1].to_fligh}
     redis.set_value('2fligh',sum);  
 })

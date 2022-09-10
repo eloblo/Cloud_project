@@ -112,7 +112,7 @@ module.exports.produce= async function(time)
     get_total_data();
     get2fligh();
     get2land();
-    //get_weather();
+    get_weather();
     get_landed();
   }, time);
 }
