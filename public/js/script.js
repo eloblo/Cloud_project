@@ -103,7 +103,7 @@ async function pushpinClicked(e) {
         if(flight.dep_delayed > 15){ dep_delayed = 1}
         if(flight.dep_delayed > 60){ dep_delayed = 2}
     }
-    var date = new Date(flight.dep_time_utc)
+    var date = new Date(flight.dep_time)
     const params = {
       arr_airport: airports[flight.arr_iata],
       dep_airport: airports[flight.dep_iata],
@@ -119,10 +119,10 @@ async function pushpinClicked(e) {
     infobox.setOptions({
       location: e.target.getLocation(),
       title: e.target.metadata.title,
-      description: `location: lat:${e.target.getLocation().latitude}, lng:${e.target.getLocation().longitude} \n\n
-      deprature: ${flight.dep_iata}, arrival: ${flight.arr_iata} \n\n
-      departure time UTC: ${flight.dep_time_utc} \n\n      
-      arrival time UTC: ${flight.arr_time_utc} \n\n                
+      description: `location: lat:${e.target.getLocation().latitude}, lng:${e.target.getLocation().longitude} \t\t
+      deprature: ${flight.dep_iata}, arrival: ${flight.arr_iata} \t\t
+      departure time UTC: ${flight.dep_time_utc} \t\t      
+      arrival time UTC: ${flight.arr_time_utc} \t\t                
       estimated delay: ${js}`,
       visible: true,
     });

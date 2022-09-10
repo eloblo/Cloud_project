@@ -49,7 +49,7 @@ async function getAPI(table, url, params){
   console.log(`Mysql: uploaded data to ${table}`)
 }
 
-async function init_connection(time){
+async function init_connection(){
   // if exist create the tables in tables[x][0]. table format according to air lab response format
   const flights_table_to = `CREATE TABLE IF NOT EXISTS ${tables[0][0]} (hex VARCHAR(16), reg_number VARCHAR(16), flag VARCHAR(8), lat FLOAT(24), \
                           lng FLOAT(24), alt FLOAT(24), dir FLOAT(24), speed FLOAT(24), v_speed FLOAT(24), squawk VARCHAR(16), flight_number VARCHAR(16), \
@@ -81,9 +81,12 @@ async function init_connection(time){
   // connect to mysql server
   await mysqlJson.connect(function(err, res){})
   console.log('System-a: connected to MYSQL');
-  for(const query in queries){
+  for(const query of queries){
     await mysqlJson.query(query, function(err, res){})
   }
+}
+
+function upload_data(time){
   setInterval(() => {
     for(const element of tables) {
       try{
@@ -96,7 +99,12 @@ async function init_connection(time){
   }, time)
 }
 
+module.exports.connect_sql=async function()
+{ 
+  await init_connection();
+}
+
 module.exports.load_data=function(time)
 { 
-  init_connection(time);
+  upload_data(time);
 }
