@@ -20,7 +20,6 @@ const io = new Server(server);
 
 // globals
 let test_flight_data = null;
-let counter = 0;
 
 async function initServer() {
   redis.connect_db()

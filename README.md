@@ -16,6 +16,10 @@ Python:
 
 Node.js: run npm install
 
+## Running
+
+start system-c.js, system-a.js, cons.js, app.js
+
 ## Troubleshoot
 1. Error: connect ENOENT /var/run/mysqld/mysqld.sock
 solution - make sure that you fill the port with 3306, and the address is 0.0.0.0
