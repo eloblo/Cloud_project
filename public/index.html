@@ -4,6 +4,9 @@
     <title>Cloud Project</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
 
     <meta name="viewport" content=
         "width=device-width,
@@ -15,7 +18,8 @@
         #clock {
             font-size: 80px;
             width: 400px;
-            margin: 100px;
+            margin: 10px;
+            margin-left: 2cm;
             text-align: center;
             border: 2px solid black;
             border-radius: 20px;
@@ -23,45 +27,55 @@
     </style>
   </head>
   <body>
-    <div class="header">
-      <div class="card">
-        <img src="/images/takeoff.png" alt="Avatar" style="width:5%">
-        <div class="container" id="2fligh">
-          <h1><b>Flights before take off</b></h1>
-          <h2><b>0<b></h2>
-        </div>
-        <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/js/2fligh.js"></script>
-      </div>
-      <div class="card">
-        <img src="/images/landing.png" alt="Avatar" style="width:5%">
-        <div class="container" id="2land">
-          <h1><b>Flights before landing</b></h1>
-          <h2><b>0<b></h2>
-        </div>
-        <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/js/2land.js"></script>
-      </div>
-      <div class="card">
-        <img src="/images/weather.png" alt="Avatar" style="width:5%">
-        <div class="container" id="weather">
-          <h1><b>Current tempeture at TLV</b></h1>
-          <h2><b>0 C<b></h2>
-        </div>
-        <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/js/weather.js"></script>
-      </div>
-    </div>
     <div class="root">
-      <div class="header"></div>
-      <div class="map">
-        <div id="map"></div>
-      </div>
-      <div class="footer">
+        <div class="row">
+          <div class="column" >
+            <div class="card card-1" id="2fligh">
+                <br>
+                <h3><b>Flights before take off</b></h3>
+                <h4><b>0<b></h4>
+              <script src="/socket.io/socket.io.js"></script>
+              <script type="text/javascript" src="/js/2fligh.js"></script>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card card-1" id="2land">
+                <br>
+                <h3><b>Flights before landing</b></h3>
+                <h4><b>0<b></h4>
+              <script src="/socket.io/socket.io.js"></script>
+              <script type="text/javascript" src="/js/2land.js"></script>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card card-1" id="weather">
+                <br>
+                <h3><b>Current tempeture at TLV</b></h3>
+                <h4><b>0<b></h4>
+              <script src="/socket.io/socket.io.js"></script>
+              <script type="text/javascript" src="/js/weather.js"></script>
+            </div>
+          </div>
+        </div>
+        <div class="map">
+          <div id="map"></div>
+        </div>
+      <div class="clock2">
         <div id="clock">00:00:00</div>
         <script type="text/javascript" src="/js/clock.js"></script>
       </div>
+
     </div>
+    <div class='light x1'></div>
+    <div class='light x2'></div>
+    <div class='light x3'></div>
+    <div class='light x4'></div>
+    <div class='light x5'></div>
+    <div class='light x6'></div>
+    <div class='light x7'></div>
+    <div class='light x8'></div>
+    <div class='light x9'></div>
+    
 
     <!-- scripts -->
     <script src="/socket.io/socket.io.js"></script>
@@ -76,4 +90,3 @@
     ></script>
   </body>
 </html>
-

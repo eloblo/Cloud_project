@@ -2,6 +2,5 @@ const socket_weather = io();
 
 socket_weather.on("weather", function(data){
     var card = document.getElementById("weather");
-    card.innerHTML=`<h1><b>Current tempeture at TLV</b></h1>
-    <h2><b>${data.temperature} C<b></h2>`;
+    card.innerHTML=`<br><h3><b>Current tempeture at TLV</b></h3><h4><b>${data.temperature} C<b></h4>`;
 })
